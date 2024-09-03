@@ -1,19 +1,54 @@
-import { Products } from "../Products/Product.model";
-import { TSaleProduct } from "./Sales.interface";
-import { Sales } from "./Sales.model";
+import { Products } from '../Products/Product.model';
+import { TSaleProduct } from './Sales.interface';
+import { Sales } from './Sales.model';
 
-// const addSalesProductIntoDB = async(payload : TSaleProduct) => {
+const addSalesProductIntoDB = async (payload: TSaleProduct) => {
 
-//     const product = await Products.findById(payload.productId, {productQuantity : 1});
+  const remainingProduct = await Products.findById(payload.productId)
+  const remainigQuantity = remainingProduct!.productQuantity - payload.quantity
+  
+  if(remainingProduct!.productQuantity !== 0){
 
-//     const updatedQuantity = product!.productQuantity - payload.quantity
+    await Products.findByIdAndUpdate(payload.productId, {productQuantity : remainigQuantity}, {new : true})
 
-//     console.log(updatedQuantity);
+    const existingProduct = await Sales.findOne({
+      date: payload?.date,
+      productId: payload?.productId,
+    });
+  
+    if (existingProduct) {
+  
+      const initialQuantity = existingProduct!.quantity;
+      const totalQuantity = initialQuantity + payload.quantity;
+  
+      const initialPrice = existingProduct!.price;
+      const totalPrice = (Number(initialPrice) + Number(payload.price)).toFixed(
+        2,
+      );
+  
+      const updateProduct = await Sales.findOneAndUpdate(
+        { productId: payload.productId, date: payload.date },
+        {
+          quantity: totalQuantity,
+          price: totalPrice,
+        },
+        { new: true },
+      );
+      return updateProduct;
+    }
+  
 
-//     // const result = await Sales.create(payload);
-//     // return result
-// }
+    await Products.findByIdAndUpdate(payload.productId, {productQuantity : remainigQuantity}, {new : true})
 
-// export const SalesService = {
-//     addSalesProductIntoDB
-// }
+    const result = await Sales.create(payload);
+      return result
+
+  }else{
+    const message = 'Stock Out'
+    return message;
+  }
+};
+
+export const SalesService = {
+  addSalesProductIntoDB,
+};

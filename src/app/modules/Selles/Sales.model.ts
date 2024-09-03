@@ -23,7 +23,7 @@ const createSalesProductSchema = new Schema<TSaleProduct>({
         required: [ true, 'Product quantity is required' ],
       },
       price: {
-        type: String,
+        type: Number,
         required: true,
       },
       tax: {

@@ -4,6 +4,6 @@ export type TSaleProduct = {
     name : string;
     date : string;
     quantity : number;
-    price : string;
+    price : number;
     tax : number;
 }
