@@ -16,7 +16,21 @@ const createProduct = catchAsync(async(req, res) => {
     })
 });
 
+const getProducts = catchAsync(async(req, res) => {
+    const {branchId} = req.params;
+    
+    const resData = await ProductService.getProductsByBranchId(branchId);
+
+    sendResponce(res, {
+        statusCode : httpStatus.OK,
+        success : true,
+        message : 'Get all products',
+        data : resData
+    })
+})
+
 
 export const ProductController = {
-    createProduct
+    createProduct,
+    getProducts
 }

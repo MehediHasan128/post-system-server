@@ -6,6 +6,12 @@ const createProductIntoDB = async(payload : TProduct) => {
     return result;
 };
 
+const getProductsByBranchId = async(id : string) => {
+    const result = await Products.find({branchId : id})
+    return result;
+}
+
 export const ProductService = {
-    createProductIntoDB
+    createProductIntoDB,
+    getProductsByBranchId
 }
