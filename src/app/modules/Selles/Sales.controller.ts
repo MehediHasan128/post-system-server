@@ -11,12 +11,25 @@ const createSalesProduct = catchAsync(async(req, res) => {
     sendResponce(res, {
         statusCode : httpStatus.OK,
         success : true,
-        message : `${(resData === 'Stock Out')? 'This product is Stock out' : 'Product add to sales'}`,
+        message : 'Product add to sales',
         data : resData
     })
 });
 
 
+const getAllSalesProduct = catchAsync(async(req, res) => {
+    const resData = await SalesService.getAllSaleProductFromDB();
+
+    sendResponce(res, {
+        statusCode : httpStatus.OK,
+        success : true,
+        message : 'Gell all sales product',
+        data : resData
+    })
+})
+
+
 export const SalesController = {
-    createSalesProduct
+    createSalesProduct,
+    getAllSalesProduct
 }

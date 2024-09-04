@@ -68,6 +68,12 @@ const addSalesProductIntoDB = async (payload: TSaleProduct) => {
   }
 };
 
+const getAllSaleProductFromDB = async() => {
+  const result = await Sales.find();
+  return result
+}
+
 export const SalesService = {
   addSalesProductIntoDB,
+  getAllSaleProductFromDB
 };
