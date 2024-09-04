@@ -29,7 +29,13 @@ const createProductSchema = new Schema<TProduct>(
     },
     discount: {
       type: Number,
+      default: null
     },
+    stock: {
+      type: String,
+      enum: ['available', 'stock out'],
+      default: 'available'
+    }
   },
   {
     timestamps: true,

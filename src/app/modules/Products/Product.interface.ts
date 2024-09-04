@@ -6,4 +6,5 @@ export type TProduct = {
   buyingPrice: number;
   sellingPrice: number;
   discount?: number;
+  stock: 'available' | 'stock out';
 };
